@@ -1,0 +1,71 @@
+body {
+    background-color: lightblue;
+    margin: 0;
+}
+
+.gamebox {
+    position: fixed;
+    background-color: lightblue;
+    border: 10px solid black;
+    width: 90%; 
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.floor {
+    background-color: green;
+    position: absolute;
+    width: 2000px;
+    height: 30%;
+    bottom: 0;
+    left: 0;
+}
+
+.boundary-marker {
+    position: absolute;
+    bottom: 50%;
+    height: 33px;
+    width: 38px;
+    background-image: url('Images/Background/Bush.PNG');
+    z-index: 10;
+    transform: scale(2);
+    image-rendering: pixelated;
+}
+
+.left-marker {
+    left: 15px;
+}
+
+.right-marker {
+    right: 15px;
+}
+
+.player {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 50%;
+    bottom: 30%;
+    transform-origin: center bottom;
+    transform: scale(2.5);
+    background-repeat: no-repeat;
+    animation: playerIdle 1s steps(12) infinite;
+    image-rendering: pixelated;
+}
+
+@keyframes playerIdle {
+    from { background-position: 0 0; }
+    to { background-position: -384px 0; } 
+}
+
+.player.running {
+    animation: playerRun 0.6s steps(8) infinite;
+}
+
+@keyframes playerRun {
+    from { background-position: 0 0; }
+    to { background-position: -256px 0; }
+}
