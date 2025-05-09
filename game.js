@@ -9,11 +9,8 @@ const scale = 2.5;
 const moveSpeed = 9;
 let isFacingRight = true;
 let colourID;
-const floor = document.querySelector('.floor');
-let cameraOffsetX = 0;
-const worldWidth = 2000; // match floor width
-const halfViewport = gameboxWidth / 2;
-
+let playerWorldX = 500; // Starting position in the world
+let playerScreenX = gameboxWidth / 2; // Center of screen
 
 colourID = Math.floor(Math.random() * 10); // random colourID for now
 changeColour(player);
@@ -68,6 +65,8 @@ document.addEventListener('keydown', (e) => {
         player.style.backgroundImage = playerImagePath + "Running.png')";
         player.classList.add('running');
     }
+    console.log("Keys:", keys);
+    console.log("World X:", playerWorldX);
 });
 
 // end running
@@ -82,22 +81,30 @@ document.addEventListener('keyup', (e) => {
 });
 
 function gameLoop() {
+    // player movement left and right
     if (keys.ArrowLeft) {
-        playerPosition = Math.max(0 + playerWidth, playerPosition - moveSpeed);
+        playerWorldX = Math.max(playerWidth * scale / 2, playerWorldX - moveSpeed);
         if (isFacingRight) {
             player.style.transform = 'translateX(-50%) scaleX(-2.5) scaleY(2.5)';
             isFacingRight = false;
         }
     } 
     else if (keys.ArrowRight) {
-        playerPosition = Math.min(gameboxWidth - playerWidth, playerPosition + moveSpeed);
+        playerWorldX = Math.min(2000 - (playerWidth * scale / 2), playerWorldX + moveSpeed);
         if (!isFacingRight) {
             player.style.transform = 'translateX(-50%) scaleX(2.5) scaleY(2.5)';
             isFacingRight = true;
         }
     }
+
+    // Update player screen position (relative to world-container)
+    player.style.left = `${playerWorldX}px`;
+
+    // Update camera
+    const cameraX = playerWorldX - (gameboxWidth / 2);
+    const clampedX = Math.max(0, Math.min(cameraX, 2000 - gameboxWidth));
+    document.querySelector('.world-container').style.transform = `translateX(-${clampedX}px)`;
     
-    player.style.left = `${playerPosition}px`;
     requestAnimationFrame(gameLoop);
 }
 
