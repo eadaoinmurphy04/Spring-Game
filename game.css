@@ -24,6 +24,46 @@ body {
     will-change: transform;
 }
 
+.decorations {
+    position:absolute;
+    bottom: 290px;
+    image-rendering: pixelated;
+    z-index: 2;
+}
+
+.tree {
+    background-image: url('Images/Background/AnimatedAutum.png');
+    height: 64px;
+    width: 64px;
+    transform: scale(5);
+    animation: treeAnimation 3s steps(16) infinite;
+}
+
+@keyframes treeAnimation {
+    from { background-position: 0 0; }
+    to { background-position: -1024px 0; } 
+}
+
+#tree0 {
+    left:-1%;
+}
+
+#tree1 {
+    left: 20%;
+}
+
+#tree2 {
+    left: 50%;
+}
+
+#tree3 {
+    left: 70%;
+}
+
+#tree4 {
+    left: 97%;
+}
+
 .floor {
     background-color: green;
     position: absolute;
@@ -77,4 +117,17 @@ body {
 @keyframes playerRun {
     from { background-position: 0 0; }
     to { background-position: -256px 0; }
+}
+
+.hand-cam {
+  position: absolute;
+  width: 40px;  /* Length of the cam */
+  height: 8px;   /* Thickness of the cam */
+  background-color: #ff5555;
+  left: 50%;
+  top: 50%;
+  transform-origin: left center; /* Rotates from player's center */
+  z-index: 5;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(255,0,0,0.7);
 }

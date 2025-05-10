@@ -11,6 +11,9 @@ let isFacingRight = true;
 let colourID;
 let playerWorldX = 500; // Starting position in the world
 let playerScreenX = gameboxWidth / 2; // Center of screen
+const handcam = document.querySelector('.hand-cam');
+let mouseX = 0;
+let mouseY = 0;
 
 colourID = Math.floor(Math.random() * 10); // random colourID for now
 changeColour(player);
@@ -80,6 +83,27 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
+// event listener for moving the mouse
+document.addEventListener('mousemove', (e) => {
+  const gameboxRect = gamebox.getBoundingClientRect();
+  
+  // Calculate mouse position in the gamebox
+  mouseX = e.clientX - gameboxRect.left - gameboxWidth/2;
+  mouseY = e.clientY - gameboxRect.top - gameboxHeight/2;
+});
+
+// update hand-cam rotation each frame
+function updateHandCam() {
+  // calculate angle between player center and mouse
+  const angle = Math.atan2(mouseY, mouseX);
+  
+  // Apply rotation and position
+  handcam.style.transform = `
+    rotate(${angle}rad)
+    translateX(20px) /* Half of handcam width to extend outward */
+  `;
+}
+
 function gameLoop() {
     // player movement left and right
     if (keys.ArrowLeft) {
@@ -97,7 +121,7 @@ function gameLoop() {
         }
     }
 
-    // Update player screen position (relative to world-container)
+    // Update player screen position
     player.style.left = `${playerWorldX}px`;
 
     // Update camera
@@ -105,6 +129,7 @@ function gameLoop() {
     const clampedX = Math.max(0, Math.min(cameraX, 2000 - gameboxWidth));
     document.querySelector('.world-container').style.transform = `translateX(-${clampedX}px)`;
     
+    updateHandCam();
     requestAnimationFrame(gameLoop);
 }
 
