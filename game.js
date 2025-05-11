@@ -29,10 +29,22 @@ const squirrelMaxX = 1400; // Right movement boundary
 let bird = document.querySelector('.bird');
 let birdX = 300; // Starting position X
 let birdDirection = 1; // 1 for right, -1 for left
-const birdSpeed = 7;
+const birdSpeed = 9;
 const birdMinX = 100; // Left movement boundary
 const birdMaxX = 1800; // Right movement boundary
 bird.style.transform = 'scaleX(-1) scaleY(1) scale(2)'; // Start facing right
+
+// deer movement values
+// deer sprite by https://broynsa.itch.io/
+let deer = document.querySelector('.deer');
+let deerX = 1200; // Starting position X
+let deerDirection = 1; // 1 for right, -1 for left
+const deerSpeed = 7;
+const deerMinX = 800; // Left movement boundary
+const deerMaxX = 1900; // Right movement boundary
+let deerIsSitting = false;
+let nextSitTimeout;
+deer.style.transform = 'scaleX(-1) scaleY(1) scale(3)'; // Start facing right
 
 const keys = {
     ArrowLeft: false,
@@ -88,6 +100,24 @@ document.querySelectorAll('.animal').forEach(animal => {
     });
 });
 
+// schedules when the deer will randomly sit down
+function scheduleDeerSit() {
+    const timeUntilSit = Math.random() * 5000 + 3000; // 3–8 seconds
+    nextSitTimeout = setTimeout(() => {
+        deer.classList.add('sit');
+        deerIsSitting = true;
+
+        const sitDuration = Math.random() * 3000 + 2000; // Sit for 2–5 seconds
+        setTimeout(() => {
+            deer.classList.remove('sit');
+            deerIsSitting = false;
+            scheduleDeerSit(); // Schedule the next sit
+        }, sitDuration);
+    }, timeUntilSit);
+}
+
+scheduleDeerSit();
+
 function gameLoop() {
 if (!pause)
 {
@@ -116,9 +146,8 @@ if (!pause)
     const clampedX = Math.max(0, Math.min(cameraX, 2000 - gameboxWidth));
     document.querySelector('.world-container').style.transform = `translateX(-${clampedX}px)`;
     
-    // squirrel movement
-        squirrelX += squirrelSpeed * squirrelDirection;
-    // change sprite direction    
+    // manage squirrel movement
+    squirrelX += squirrelSpeed * squirrelDirection;
     if (squirrelX >= squirrelMaxX) {
         squirrelDirection = -1; // Move left
         squirrel.style.transform = 'scaleX(-2) scaleY(2)'; // Flip sprite
@@ -139,6 +168,19 @@ if (!pause)
         bird.style.transform = 'scaleX(-1) scaleY(1) scale(2)'; // Flipped (right-facing)
     }
     bird.style.left = `${birdX}px`;
+    
+    // manage deer movement
+    if (!deerIsSitting) {
+        deerX += deerSpeed * deerDirection;
+        if (deerX >= deerMaxX) {
+            deerDirection = -1; // Move left
+            deer.style.transform = 'scaleX(1) scaleY(1) scale(3)'; // Normal (left-facing)
+        } else if (deerX <= deerMinX) {
+            deerDirection = 1; // Move right
+            deer.style.transform = 'scaleX(-1) scaleY(1) scale(3)'; // Flipped (right-facing)
+        }
+        deer.style.left = `${deerX}px`;
+    }
 }
 
 requestAnimationFrame(gameLoop);

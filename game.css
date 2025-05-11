@@ -1,5 +1,5 @@
 body {
-    background-color: lightblue;
+    background-color: lightpink;
     margin: 0;
     cursor: url('/Images/camera_cursor.png'), auto;
 }
@@ -59,7 +59,7 @@ body {
     visibility: visible;
 }
 
-.bird-icon, .squirrel-icon {
+.bird-icon, .squirrel-icon, .deer-icon {
     grid-column: span 2 / span 2;
     grid-row: span 2 / span 2;
         
@@ -78,7 +78,7 @@ body {
 .bird-icon::before, .squirrel-icon::before {
     content: "";
     display: block;
-    height: 16px; /* Original icon sizes */
+    height: 16px;
     width: 16px;
     background-repeat: no-repeat;
     transform: scale(4); /* Reduced from 5 */
@@ -95,6 +95,45 @@ body {
     width: 32px;
     background-image: url('Images/Animals/squirrel.png');
     animation: squirrelAnimation 1s steps(8) infinite;
+}
+
+.deer-icon {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.deer-icon::before {
+    content: "";
+    display: block;
+    height: 32px;
+    width: 32px; 
+    background-image: url('Images/Animals/deer_sit.png');
+    transform: scale(4);
+    image-rendering: pixelated;
+    animation: deerSitAndStand 6s steps(2) infinite;
+}
+
+@keyframes deerSitAndStand {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: -64px 0;
+    }
+    75% {
+        background-position: -64px 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
 }
 
 .name {
@@ -233,6 +272,43 @@ body {
 @keyframes squirrelAnimation {
     from { background-position: 0 -64px; }
     to { background-position: -256px -64px; } 
+}
+
+.deer{
+    position: absolute;
+    bottom: 35%;
+    left: 30%;
+    height: 32px;
+    width: 32px;
+    background-image: url('Images/Animals/deer_run.png');
+    animation: deerAnimation 0.5s steps(3) infinite;
+    transform: scale(3);
+    image-rendering: pixelated;
+}
+
+.deer.sit {
+    background-image: url('Images/Animals/deer_sit.png');
+    animation: 
+        deerSit 1s steps(2) forwards,
+        deerStand 1s steps(2) forwards;
+    animation-delay: 
+        0s,     
+        3s;      
+}
+
+@keyframes deerAnimation {
+    from { background-position: 0 -0px; }
+    to { background-position: -96px -0px; } 
+}
+
+@keyframes deerSit {
+    from { background-position: 0 -0px; }
+    to { background-position: -64px -0px; } 
+}
+
+@keyframes deerStand {
+    from { background-position: -64px 0; }
+    to { background-position: 0 0; }      
 }
 
 .player {
