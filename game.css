@@ -25,6 +25,102 @@ body {
     will-change: transform;
 }
 
+.album-icon{
+    position: absolute;
+    background-image: url('Images/book.png');
+    image-rendering: pixelated;
+    height: 32px;
+    width: 32px;
+    top: 4%;
+    left: 2%;
+    transform: scale(2);
+    z-index: 100;
+}
+
+.album {
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 70%;
+    background-color: white;
+    border: 8px solid black;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    z-index: 100;
+    display: grid;
+    gap: 8px;
+    padding: 20px; /* Add some padding */
+}
+
+.album-visible .album {
+    visibility: visible;
+}
+
+.bird-icon, .squirrel-icon {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+        
+    /* Center content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.squirrel-icon {
+    grid-column-start: 4;
+}
+
+.bird-icon::before, .squirrel-icon::before {
+    content: "";
+    display: block;
+    height: 16px; /* Original icon sizes */
+    width: 16px;
+    background-repeat: no-repeat;
+    transform: scale(4); /* Reduced from 5 */
+    image-rendering: pixelated;
+}
+
+.bird-icon::before {
+    background-image: url('Images/Animals/BirdSprite.png');
+    animation: birdAnimation 0.5s steps(8) infinite;
+}
+
+.squirrel-icon::before {
+    height: 32px;
+    width: 32px;
+    background-image: url('Images/Animals/squirrel.png');
+    animation: squirrelAnimation 1s steps(8) infinite;
+}
+
+.name {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: medium;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.7);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+.div3 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-row-start: 4;
+}
+
+.div4 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 4;
+}
+
 .decorations {
     position:absolute;
     bottom: 290px;

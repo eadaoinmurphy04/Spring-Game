@@ -11,10 +11,12 @@ let isFacingRight = true;
 let colourID;
 let playerWorldX = 500; // Starting player position in the world
 let playerScreenX = gameboxWidth / 2; // begin screen position in the middle
+let pause = false;
 const handcam = document.querySelector('.hand-cam');
 const animal = document.querySelector('.animal');
 
 // squirrel movement values
+// squirrel sprite by https://elthen.itch.io/
 let squirrel = document.querySelector('.squirrel');
 let squirrelX = 600; // Starting position X
 let squirrelDirection = 1; // 1 for right, -1 for left
@@ -23,6 +25,7 @@ const squirrelMinX = 600; // Left movement boundary
 const squirrelMaxX = 1400; // Right movement boundary
 
 // bird movement values
+// bird sprite by https://ma9ici4n.itch.io/
 let bird = document.querySelector('.bird');
 let birdX = 300; // Starting position X
 let birdDirection = 1; // 1 for right, -1 for left
@@ -56,6 +59,20 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
+// click event for opening and closing the album
+let album_icon = document.querySelector('.album-icon');
+let album = document.querySelector('.album');
+album_icon.addEventListener('click', function() {    
+    if (!pause){ // open the album and pause the game
+        document.body.classList.add('album-visible');
+        pause = true;
+    }
+    else{ // close the album and resume the game
+        document.body.classList.remove('album-visible');
+        pause = false;
+    }
+});
+
 // click event for each animal
 document.querySelectorAll('.animal').forEach(animal => {
     // camera clicks
@@ -72,7 +89,10 @@ document.querySelectorAll('.animal').forEach(animal => {
 });
 
 function gameLoop() {
+if (!pause)
+{
     // player movement left and right
+    // bunny player sprite by https://toffeecraft.itch.io/
     if (keys.ArrowLeft) {
         playerWorldX = Math.max(playerWidth * scale / 2, playerWorldX - moveSpeed);
         if (isFacingRight) {
@@ -119,8 +139,9 @@ function gameLoop() {
         bird.style.transform = 'scaleX(-1) scaleY(1) scale(2)'; // Flipped (right-facing)
     }
     bird.style.left = `${birdX}px`;
+}
 
-    requestAnimationFrame(gameLoop);
+requestAnimationFrame(gameLoop);
 }
 
 player.style.left = `${playerPosition}px`;
