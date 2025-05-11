@@ -37,7 +37,6 @@ body {
     z-index: 100;
 }
 
-/* Revised CSS: 2×2 grid layout with explicit areas */
 .album {
   display: grid;
   grid-template-areas:
@@ -46,10 +45,10 @@ body {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows:    repeat(2, 1fr);
 
-  justify-items: center;   /* center each block horizontally */
-  align-items:   center;   /* center each block vertically */
+  justify-items: center;   
+  align-items:   center; 
 
-  gap:     16px;           /* optional spacing */
+  gap:     16px;          
   padding: 20px;
 
   visibility: hidden;
@@ -68,6 +67,18 @@ body {
 
 .album-visible .album {
   visibility: visible;
+}
+
+.win-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3em;
+  color: green;
+  font-weight: bold;
+  display: none;
+  z-index: 101;
 }
 
 .bird-icon, .squirrel-icon, .deer-icon, .dog-icon {

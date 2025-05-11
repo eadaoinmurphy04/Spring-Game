@@ -107,6 +107,9 @@ album_icon.addEventListener('click', function() {
     }
 });
 
+const foundAnimals = new Set();
+const totalAnimals = ['squirrel', 'bird', 'deer', 'dog'];
+
 // click event for each animal
 document.querySelectorAll('.animal').forEach(animal => {
     // animal logged as photographed
@@ -127,8 +130,21 @@ document.querySelectorAll('.animal').forEach(animal => {
         if (nameLabel) {
             nameLabel.classList.add('found');
         }
+        foundAnimals.add(animalType);
+
+        // Win condition
+        if (foundAnimals.size === totalAnimals.length) {
+            showWinMessage();
+        }
     });
 });
+
+function showWinMessage() {
+    const winMessage = document.querySelector('.win-message');
+    if (winMessage) {
+        winMessage.style.display = 'block';
+    }
+}
 
 // schedules when the deer will randomly sit down
 function scheduleDeerSit() {
