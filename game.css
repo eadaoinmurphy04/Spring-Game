@@ -37,85 +37,106 @@ body {
     z-index: 100;
 }
 
+/* Revised CSS: 2×2 grid layout with explicit areas */
 .album {
-    visibility: hidden;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    height: 70%;
-    background-color: white;
-    border: 8px solid black;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    z-index: 100;
-    display: grid;
-    gap: 8px;
-    padding: 20px; /* Add some padding */
+  display: grid;
+  grid-template-areas:
+    "bird squirrel"
+    "deer  dog     ";
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows:    repeat(2, 1fr);
+
+  justify-items: center;   /* center each block horizontally */
+  align-items:   center;   /* center each block vertically */
+
+  gap:     16px;           /* optional spacing */
+  padding: 20px;
+
+  visibility: hidden;
+  position:   fixed;
+  top:        50%;
+  left:       50%;
+  transform:  translate(-50%, -50%);
+  width:      60%;
+  height:     70%;
+  background-color: white;
+  border: 8px solid black;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 100;
 }
 
 .album-visible .album {
-    visibility: visible;
+  visibility: visible;
 }
 
-.bird-icon, .squirrel-icon, .deer-icon {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
-        
-    /* Center content */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.bird-icon, .squirrel-icon, .deer-icon, .dog-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* center sprite (and label) vertically */
+  align-items: center;       /* center horizontally */
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.squirrel-icon {
-    grid-column-start: 4;
-}
+.bird-icon     { grid-area: bird; }
+.squirrel-icon { grid-area: squirrel; }
+.deer-icon     { grid-area: deer; }
+.dog-icon      { grid-area: dog; }
 
-.bird-icon::before, .squirrel-icon::before {
-    content: "";
-    display: block;
-    height: 16px;
-    width: 16px;
-    background-repeat: no-repeat;
-    transform: scale(4); /* Reduced from 5 */
-    image-rendering: pixelated;
-}
-
+/* Individual sprite rules unchanged */
 .bird-icon::before {
-    background-image: url('Images/Animals/BirdSprite.png');
-    animation: birdAnimation 0.5s steps(8) infinite;
+  content: "";
+  display: block;
+  height: 16px;
+  width:  16px;
+  transform: scale(4);
+  image-rendering: pixelated;
+  background-image: url('Images/Animals/BirdSprite.png');
+  animation: birdAnimation 0.5s steps(8) infinite;
 }
-
 .squirrel-icon::before {
-    height: 32px;
-    width: 32px;
-    background-image: url('Images/Animals/squirrel.png');
-    animation: squirrelAnimation 1s steps(8) infinite;
+  content: "";
+  display: block;
+  height: 32px;
+  width:  32px;
+  transform: scale(4);
+  image-rendering: pixelated;
+  background-image: url('Images/Animals/squirrel.png');
+  animation: squirrelAnimation 1s steps(8) infinite;
 }
-
-.deer-icon {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
 .deer-icon::before {
-    content: "";
-    display: block;
-    height: 32px;
-    width: 32px; 
-    background-image: url('Images/Animals/deer_sit.png');
-    transform: scale(4);
-    image-rendering: pixelated;
-    animation: deerSitAndStand 6s steps(2) infinite;
+  content: "";
+  display: block;
+  height: 32px;
+  width:  32px;
+  transform: scale(4);
+  image-rendering: pixelated;
+  background-image: url('Images/Animals/deer_sit.png');
+  animation: deerSitAndStand 6s steps(2) infinite;
+}
+.dog-icon::before {
+  content: "";
+  display: block;
+  height: 32px;
+  width:  32px;
+  transform: scale(4);
+  image-rendering: pixelated;
+  background-image: url('Images/Animals/dog_run.png');
+  animation: dogAnimation 0.5s steps(4) infinite;
+}
+
+.name {
+  position: absolute;
+  bottom: 10%;
+  left:   50%;
+  transform: translateX(-50%);
+  font-size: medium;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.7);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 @keyframes deerSitAndStand {
@@ -134,30 +155,6 @@ body {
     100% {
         background-position: 0 0;
     }
-}
-
-.name {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: medium;
-    white-space: nowrap;
-    background: rgba(255,255,255,0.7);
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-.div3 {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
-    grid-row-start: 4;
-}
-
-.div4 {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
-    grid-column-start: 4;
-    grid-row-start: 4;
 }
 
 .decorations {
@@ -277,7 +274,6 @@ body {
 .deer{
     position: absolute;
     bottom: 35%;
-    left: 30%;
     height: 32px;
     width: 32px;
     background-image: url('Images/Animals/deer_run.png');
@@ -309,6 +305,27 @@ body {
 @keyframes deerStand {
     from { background-position: -64px 0; }
     to { background-position: 0 0; }      
+}
+
+.dog{
+    position: absolute;
+    bottom: 35%;
+    left: 30%;
+    height: 32px;
+    width: 32px;
+    background-image: url('Images/Animals/dog_run.png');
+    animation: dogAnimation 0.5s steps(4) infinite;
+    transform: scale(3);
+    image-rendering: pixelated;
+}
+
+.dog.sit{
+    background-image: url('Images/Animals/dog_sit.png');
+}
+
+@keyframes dogAnimation {
+    from { background-position: 0 -0px; }
+    to { background-position: -128px -0px; } 
 }
 
 .player {

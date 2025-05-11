@@ -46,6 +46,16 @@ let deerIsSitting = false;
 let nextSitTimeout;
 deer.style.transform = 'scaleX(-1) scaleY(1) scale(3)'; // Start facing right
 
+// dog movement values
+// dog sprite by https://broynsa.itch.io/
+let dog = document.querySelector('.dog');
+let dogX = -10; // Starting position X
+let dogDirection = 1; // 1 for right, -1 for left
+const dogSpeed = 6;
+const dogMinX = -400; // Left movement boundary
+const dogMaxX = 200; // Right movement boundary
+let dogIsSitting = false;
+
 const keys = {
     ArrowLeft: false,
     ArrowRight: false,
@@ -115,7 +125,6 @@ function scheduleDeerSit() {
         }, sitDuration);
     }, timeUntilSit);
 }
-
 scheduleDeerSit();
 
 function gameLoop() {
@@ -181,6 +190,36 @@ if (!pause)
         }
         deer.style.left = `${deerX}px`;
     }
+
+// In your game loop's dog movement section:
+if (!dogIsSitting) {
+    dogX += dogSpeed * dogDirection;
+    
+    if (dogX >= dogMaxX) {
+        dogDirection = -1; // Face left
+        dog.style.transform = 'scaleX(-2) scaleY(2) scale(1.5)';
+        
+        // Start sitting
+        dog.classList.add('sit');
+        dog.style.transform = 'scaleX(2) scaleY(2) scale(1.5)';
+        dogIsSitting = true;
+        
+        
+        // Stand up after 3 seconds
+        setTimeout(() => {
+            dog.classList.remove('sit');
+            dog.style.transform = 'scaleX(-2) scaleY(2) scale(1.5)';
+            dogIsSitting = false;
+            dogX -= 1; // move out of sitting spot
+        }, 3000);
+    } 
+    else if (dogX <= dogMinX) {
+        dogDirection = 1; // Face right
+        dog.style.transform = 'scaleX(2) scaleY(2) scale(1.5)';
+    }
+    
+    dog.style.left = `${dogX}px`;
+}
 }
 
 requestAnimationFrame(gameLoop);
