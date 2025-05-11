@@ -283,7 +283,7 @@ body {
     bottom: 32%;
     height: 32px;
     width: 32px;
-    background-image: url('Images/Animals/squirrel.PNG');
+    background-image: url('Images/Animals/squirrel.png');
     animation: squirrelAnimation 1s steps(8) infinite;
     transform: scale(2);
     image-rendering: pixelated;
