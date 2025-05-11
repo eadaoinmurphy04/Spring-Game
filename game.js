@@ -49,19 +49,31 @@ deer.style.transform = 'scaleX(-1) scaleY(1) scale(3)'; // Start facing right
 // dog movement values
 // dog sprite by https://broynsa.itch.io/
 let dog = document.querySelector('.dog');
-let dogX = -10; // Starting position X
+let dogX = -400; // Starting position X
 let dogDirection = 1; // 1 for right, -1 for left
 const dogSpeed = 6;
-const dogMinX = -400; // Left movement boundary
+const dogMinX = -600; // Left movement boundary
 const dogMaxX = 200; // Right movement boundary
 let dogIsSitting = false;
+
+// controls background music
+const backgroundMusic = new Audio('Sound/relaxing-birds-and-piano-music.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.5;
+function startMusicOnce() {
+    backgroundMusic.play();
+    document.removeEventListener('click', startMusicOnce);
+    document.removeEventListener('keydown', startMusicOnce);
+}
+document.addEventListener('click', startMusicOnce);
+document.addEventListener('keydown', startMusicOnce);
 
 const keys = {
     ArrowLeft: false,
     ArrowRight: false,
 };
 
-// start running
+// start player running
 document.addEventListener('keydown', (e) => {
     if (e.key in keys) {
         keys[e.key] = true;
@@ -71,7 +83,7 @@ document.addEventListener('keydown', (e) => {
     console.log("World X:", playerWorldX);
 });
 
-// end running
+// end player running
 document.addEventListener('keyup', (e) => {
     if (e.key in keys) {
         keys[e.key] = false;
@@ -97,15 +109,23 @@ album_icon.addEventListener('click', function() {
 
 // click event for each animal
 document.querySelectorAll('.animal').forEach(animal => {
-    // camera clicks
-    
     // animal logged as photographed
-    animal.addEventListener('click', function() {
-        if (this.classList.contains('squirrel')) {
-            console.log("Squirrel clicked");
-        } 
-        else if (this.classList.contains('bird')) {
-            console.log("Bird clicked");
+    animal.addEventListener('click', function () {
+        if (pause) return;
+
+        // camera clicks
+        const shutterSound = new Audio('Sound/camera-shutter.mp3');
+        shutterSound.currentTime = 0;
+        shutterSound.play();
+
+        let animalType = "";
+        if (this.classList.contains('squirrel')) animalType = "squirrel";
+        else if (this.classList.contains('bird')) animalType = "bird";
+        else if (this.classList.contains('deer')) animalType = "deer";
+        else if (this.classList.contains('dog')) animalType = "dog";
+        const nameLabel = document.querySelector(`.${animalType}-icon .name`);
+        if (nameLabel) {
+            nameLabel.classList.add('found');
         }
     });
 });

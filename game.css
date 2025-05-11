@@ -129,14 +129,26 @@ body {
 
 .name {
   position: absolute;
-  bottom: 10%;
+  bottom: 0%;
   left:   50%;
   transform: translateX(-50%);
   font-size: medium;
   white-space: nowrap;
-  background: rgba(255,255,255,0.7);
   padding: 2px 4px;
   border-radius: 3px;
+  text-align: center;
+}
+
+.name::after {
+    content: "Not found";
+    display: block;
+    font-size: medium;
+    color: red;
+}
+
+.name.found::after {
+    content: "Found!";
+    color: green;
 }
 
 @keyframes deerSitAndStand {
