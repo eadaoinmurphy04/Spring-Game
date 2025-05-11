@@ -6,12 +6,30 @@ const playerWidth = parseFloat(getComputedStyle(player).width);
 const playerHeight = parseFloat(getComputedStyle(player).height); 
 let playerPosition = gameboxWidth / 2;
 const scale = 2.5;
-const moveSpeed = 9;
+const moveSpeed = 7;
 let isFacingRight = true;
 let colourID;
-let playerWorldX = 500; // Starting position in the world
-let playerScreenX = gameboxWidth / 2; // Center of screen
+let playerWorldX = 500; // Starting player position in the world
+let playerScreenX = gameboxWidth / 2; // begin screen position in the middle
 const handcam = document.querySelector('.hand-cam');
+const animal = document.querySelector('.animal');
+
+// squirrel movement values
+let squirrel = document.querySelector('.squirrel');
+let squirrelX = 600; // Starting position X
+let squirrelDirection = 1; // 1 for right, -1 for left
+const squirrelSpeed = 5;
+const squirrelMinX = 600; // Left movement boundary
+const squirrelMaxX = 1400; // Right movement boundary
+
+// bird movement values
+let bird = document.querySelector('.bird');
+let birdX = 300; // Starting position X
+let birdDirection = 1; // 1 for right, -1 for left
+const birdSpeed = 7;
+const birdMinX = 100; // Left movement boundary
+const birdMaxX = 1800; // Right movement boundary
+bird.style.transform = 'scaleX(-1) scaleY(1) scale(2)'; // Start facing right
 
 const keys = {
     ArrowLeft: false,
@@ -36,6 +54,21 @@ document.addEventListener('keyup', (e) => {
             player.classList.remove('running');
         }
     }
+});
+
+// click event for each animal
+document.querySelectorAll('.animal').forEach(animal => {
+    // camera clicks
+    
+    // animal logged as photographed
+    animal.addEventListener('click', function() {
+        if (this.classList.contains('squirrel')) {
+            console.log("Squirrel clicked");
+        } 
+        else if (this.classList.contains('bird')) {
+            console.log("Bird clicked");
+        }
+    });
 });
 
 function gameLoop() {
@@ -63,6 +96,30 @@ function gameLoop() {
     const clampedX = Math.max(0, Math.min(cameraX, 2000 - gameboxWidth));
     document.querySelector('.world-container').style.transform = `translateX(-${clampedX}px)`;
     
+    // squirrel movement
+        squirrelX += squirrelSpeed * squirrelDirection;
+    // change sprite direction    
+    if (squirrelX >= squirrelMaxX) {
+        squirrelDirection = -1; // Move left
+        squirrel.style.transform = 'scaleX(-2) scaleY(2)'; // Flip sprite
+    } else if (squirrelX <= squirrelMinX) {
+        squirrelDirection = 1; // Move right
+        squirrel.style.transform = 'scaleX(2) scaleY(2)';
+    }
+    squirrel.style.left = `${squirrelX}px`;
+
+    // manage bird movement
+    birdX += birdSpeed * birdDirection;
+    if (birdX >= birdMaxX) {
+        birdDirection = -1; // Move left
+        bird.style.transform = 'scaleX(1) scaleY(1) scale(2)'; // Normal (left-facing)
+    } 
+    else if (birdX <= birdMinX) {
+        birdDirection = 1; // Move right
+        bird.style.transform = 'scaleX(-1) scaleY(1) scale(2)'; // Flipped (right-facing)
+    }
+    bird.style.left = `${birdX}px`;
+
     requestAnimationFrame(gameLoop);
 }
 
