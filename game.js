@@ -227,7 +227,7 @@ if (!pause)
         deer.style.left = `${deerX}px`;
     }
 
-// In your game loop's dog movement section:
+// manage dog movement
 if (!dogIsSitting) {
     dogX += dogSpeed * dogDirection;
     
@@ -239,7 +239,6 @@ if (!dogIsSitting) {
         dog.classList.add('sit');
         dog.style.transform = 'scaleX(2) scaleY(2) scale(1.5)';
         dogIsSitting = true;
-        
         
         // Stand up after 3 seconds
         setTimeout(() => {
